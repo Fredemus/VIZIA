@@ -6,6 +6,7 @@ use baseview::{
 use raw_window_handle::HasRawWindowHandle;
 
 use vizia_core::*;
+use crate::proxy::BaseviewProxy;
 
 /// Handles a vizia_baseview application
 pub(crate) struct ViziaWindow {
@@ -63,7 +64,8 @@ impl ViziaWindow {
             parent,
             window_settings,
             move |window: &mut baseview::Window<'_>| -> ViziaWindow {
-                let context = Context::new();
+                let mut context = Context::new();
+                context.event_proxy = Some(Box::new(BaseviewProxy()));
                 ViziaWindow::new(
                     context,
                     win_desc,
@@ -102,7 +104,8 @@ impl ViziaWindow {
         Window::open_as_if_parented(
             window_settings,
             move |window: &mut baseview::Window<'_>| -> ViziaWindow {
-                let context = Context::new();
+                let mut context = Context::new();
+                context.event_proxy = Some(Box::new(BaseviewProxy()));
                 ViziaWindow::new(
                     context,
                     win_desc,
@@ -140,7 +143,8 @@ impl ViziaWindow {
         Window::open_blocking(
             window_settings,
             move |window: &mut baseview::Window<'_>| -> ViziaWindow {
-                let context = Context::new();
+                let mut context = Context::new();
+                context.event_proxy = Some(Box::new(BaseviewProxy()));
                 ViziaWindow::new(
                     context,
                     win_desc,

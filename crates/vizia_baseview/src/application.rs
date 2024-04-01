@@ -1,3 +1,4 @@
+use crate::convert::cursor_icon_to_cursor_icon;
 use crate::window::ViziaWindow;
 use baseview::{Window, WindowHandle, WindowScalePolicy};
 use raw_window_handle::HasRawWindowHandle;
@@ -203,6 +204,12 @@ impl ApplicationRunner {
 
         // Events
         cx.process_events(|window_event| match window_event {
+            WindowEvent::SetCursor(cursor) => {
+                if let Some(icon) = cursor_icon_to_cursor_icon(*cursor) {
+                    window.set_mouse_cursor(icon)
+                } else {
+                }
+            }
             // For some reason calling window.close() crashes baseview on macos
             // WindowEvent::WindowClose => *should_close = true,
             _ => {}
